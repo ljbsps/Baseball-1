@@ -4,13 +4,25 @@
 
 using namespace std;
 
+struct GuessResult {
+	bool solved;
+	int strikes;
+	int balls;
+};
+
 class Baseball {
 public:
-	void guess(const string input) {
+	Baseball(const string question) : question(question) {}
+
+	GuessResult guess(const string input) {
 		assertIllegalArgument(input);
+
+		return { true, 3, 0 };
 	}
 
 private:
+	string question;
+
 	void assertIllegalArgument(const std::string& input)
 	{
 		if (input.length() != 3) {
