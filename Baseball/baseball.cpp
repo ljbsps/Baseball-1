@@ -20,7 +20,12 @@ public:
 			return { true, 3, 0 };
 		}
 
-		return { false, 0, 0 };
+		int strike = 0;
+		for (int idx = 0; idx < 3;idx++) {			
+			if (guessNumber[idx] == question[idx]) strike++;
+		}
+
+		return { false, strike, 0 };
 	}
 
 private:
