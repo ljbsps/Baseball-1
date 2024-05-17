@@ -25,6 +25,7 @@ public:
 
 		for (int idx = 0; idx < 3; idx++) {
 			if (guessNumber[idx] == question[idx]) guessResult.strikes++;
+			else if (question.find(guessNumber[idx]) != -1) guessResult.balls++;
 		}
 
 		return guessResult;
