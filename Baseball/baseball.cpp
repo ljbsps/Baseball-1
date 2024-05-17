@@ -20,12 +20,14 @@ public:
 			return { true, 3, 0 };
 		}
 
-		int strike = 0;
-		for (int idx = 0; idx < 3;idx++) {			
-			if (guessNumber[idx] == question[idx]) strike++;
+		GuessResult guessResult = { 0, };
+		guessResult.solved = false;
+
+		for (int idx = 0; idx < 3; idx++) {
+			if (guessNumber[idx] == question[idx]) guessResult.strikes++;
 		}
 
-		return { false, strike, 0 };
+		return guessResult;
 	}
 
 private:
