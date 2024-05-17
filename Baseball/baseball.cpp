@@ -8,6 +8,10 @@ struct GuessResult {
 	bool solved;
 	int strikes;
 	int balls;
+
+	static GuessResult correct(int strikes) {
+		return { true, strikes, 0 };
+	}
 };
 
 class Baseball {
@@ -17,26 +21,19 @@ public:
 	GuessResult guess(const string guessNumber) {
 		assertIllegalArgument(guessNumber);
 		if (guessNumber == question) {
-			return { true, 3, 0 };
+			return GuessResult::correct(LENGTH_QUESTION);
 		}
 
-		GuessResult guessResult = { 0, };
-		guessResult.solved = false;
-
-		for (int idx = 0; idx < 3; idx++) {
-			if (guessNumber[idx] == question[idx]) guessResult.strikes++;
-			else if (question.find(guessNumber[idx]) != -1) guessResult.balls++;
-		}
-
-		return guessResult;
+		return getHint(guessNumber);
 	}
 
 private:
+	const int LENGTH_QUESTION = 3;
 	string question;
 
 	void assertIllegalArgument(const std::string& input)
 	{
-		if (input.length() != 3) {
+		if (input.length() != LENGTH_QUESTION) {
 			throw length_error("String length should be 3");
 		}
 		for (char ch : input) {
@@ -50,8 +47,25 @@ private:
 
 	bool isDuplicatedNumber(const string& input)
 	{
-		return input[0] == input[1]
-			|| input[0] == input[2]
-			|| input[1] == input[2];
+		for (char ch : input) {
+			if (input.find_first_of(ch) != input.find_last_of(ch)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	GuessResult getHint(const string& guessNumber) {
+		GuessResult guessResult = { 0, };
+		int pos;
+
+		for (int idx = 0; idx < LENGTH_QUESTION; idx++) {
+			if ((pos = question.find(guessNumber[idx])) == -1) continue;
+
+			if (pos == idx) guessResult.strikes++;
+			else guessResult.balls++;
+		}
+
+		return guessResult;
 	}
 };
